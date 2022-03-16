@@ -1,0 +1,15 @@
+CREATE TABLE user (
+
+id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+
+last_name VARCHAR(100),
+
+first_name VARCHAR(100),
+
+email VARCHAR(255) NOT NULL UNIQUE, 
+
+birthday DATE,
+
+is_admin BOOLEAN,
+
+);
