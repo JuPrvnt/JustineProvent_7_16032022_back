@@ -10,5 +10,6 @@ const userCtrl = require("../controllers/user");
 // Route du endpoint signup
 router.post("/signup");
 
+router.get("/", userCtrl.coucou);
 // Exportation du module router
 module.exports = router;

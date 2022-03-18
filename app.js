@@ -2,7 +2,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const User = require("./models/User");
-const sequelize = require("./database/config");
 
 // Importation des routes
 const userRoutes = require("./routes/User");
@@ -31,8 +30,13 @@ app.use((req, res, next) => {
 // remplace body parser
 app.use(express.json());
 
+const db = require("./models");
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
+});
+
 // La route d'authentification
-app.use("/signup", userRoutes);
+app.use("/account", userRoutes);
 
 // Exportation de app.js pour pouvoir y accéder depuis un autre fichier
 module.exports = app;
