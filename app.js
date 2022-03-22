@@ -1,10 +1,9 @@
 // Importation des plugins
 const express = require("express");
 const mongoose = require("mongoose");
-const User = require("./models/User");
 
 // Importation des routes
-const userRoutes = require("./routes/User");
+const userRoutes = require("./routes/UserRoutes");
 
 // Création de l'application express
 const app = express();
@@ -30,13 +29,13 @@ app.use((req, res, next) => {
 // remplace body parser
 app.use(express.json());
 
-const db = require("./models");
+const db = require("./models/indexModels");
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and re-sync db.");
 });
 
 // La route d'authentification
-app.use("/account", userRoutes);
+app.use("/signup", userRoutes);
 
 // Exportation de app.js pour pouvoir y accéder depuis un autre fichier
 module.exports = app;

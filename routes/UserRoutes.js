@@ -5,11 +5,10 @@ const express = require("express");
 const router = express.Router();
 
 // Importation du controlleur user
-const userCtrl = require("../controllers/user");
+const userCtrl = require("../controllers/UserControllers");
 
 // Route du endpoint signup
-router.post("/signup");
+router.post("/signup", userCtrl.signup);
 
-router.get("/", userCtrl.coucou);
 // Exportation du module router
 module.exports = router;
