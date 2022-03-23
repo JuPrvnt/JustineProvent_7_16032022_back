@@ -35,7 +35,7 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 
 // La route d'authentification
-app.use("/signup", userRoutes);
+app.use("/", userRoutes);
 
 // Exportation de app.js pour pouvoir y accéder depuis un autre fichier
 module.exports = app;

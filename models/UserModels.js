@@ -15,10 +15,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      birthday: {
-        type: Sequelize.DATEONLY,
-        allowNull: false,
-      },
       isAdmin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
