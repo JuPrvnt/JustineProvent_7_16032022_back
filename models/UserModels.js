@@ -3,11 +3,11 @@ module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define(
     "User",
     {
-      firstName: {
+      lastName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      lastName: {
+      firstName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -15,8 +15,8 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      isAdmin: {
-        type: Sequelize.BOOLEAN,
+      password: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
     },

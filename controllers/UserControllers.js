@@ -11,10 +11,10 @@ const User = database.user;
 // Signup pour enregistrer le nouvel utilisateur dans la base de donnée
 exports.signup = (req, res, next) => {
   const userToCreate = {
-    firstName: req.body.firstName,
     lastName: req.body.lastName,
+    firstName: req.body.firstName,
     email: req.body.email,
-    isAdmin: req.body.isAdmin,
+    password: req.body.password,
   };
   User.create(userToCreate);
   res
