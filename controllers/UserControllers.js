@@ -30,7 +30,7 @@ exports.signup = (req, res, next) => {
 
 // Login pour s'identifier
 exports.login = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ where: { email: req.body.email } })
     .then((user) => {
       if (!user) {
         return res.status(401).json({ error: "Utilisateur non trouvé !" });
