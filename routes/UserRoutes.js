@@ -14,7 +14,7 @@ const auth = require("../middleware/auth");
 router.post("/signup", userCtrl.signup);
 router.post("/login", userCtrl.login);
 router.get("/logout", userCtrl.logout);
-router.get("/:id", userCtrl.getOneUser);
+router.get("/", auth, userCtrl.getOneUser);
 
 // Exportation du module router
 module.exports = router;

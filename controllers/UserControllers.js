@@ -9,22 +9,35 @@ const database = require("../models/indexModels");
 const User = database.user;
 
 // Signup pour enregistrer le nouvel utilisateur dans la base de donnée
-exports.signup = (req, res, next) => {
-  bcrypt
-    .hash(req.body.password, 10)
-    .then((hash) => {
-      const user = new User({
-        lastName: req.body.lastName,
-        firstName: req.body.firstName,
-        email: req.body.email,
-        password: hash,
+exports.signup = async (req, res, next) => {
+  const hash = await bcrypt.hash(req.body.password, 10);
+  let userInfo = {
+    lastName: req.body.lastName,
+    firstName: req.body.firstName,
+    email: req.body.email,
+    password: hash,
+  };
+  try {
+    const user = await User.findOne({ where: { email: req.body.email } });
+    if (user) {
+      return res
+        .status(403)
+        .send({ error: "Vous êtes déjà inscrit, veuillez-vous connecter !" });
+    } else {
+      const user = await User.create(userInfo);
+      res.status(200).json({
+        _id: user.id,
+        lastName: user.lastName,
+        firstName: user.firstName,
+        email: user.email,
+        token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
+          expiresIn: "24h",
+        }),
       });
-      user
-        .save()
-        .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
-        .catch((error) => res.status(400).json({ error }));
-    })
-    .catch((error) => res.status(500).json({ error }));
+    }
+  } catch (error) {
+    return res.status(500).send({ error: "Erreur serveur" });
+  }
 };
 
 // Login pour s'identifier
@@ -42,7 +55,7 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user._id,
-            token: jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
+            token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
               expiresIn: "24h",
             }),
           });
@@ -61,8 +74,13 @@ exports.logout = (req, res, next) => {
 
 // Récupération des données du profil
 exports.getOneUser = (req, res, next) => {
-  User.findOne({ _id: req.params.id })
-    .then((user) => res.status(200).json(user))
+  User.findOne({ _id: req.auth })
+    .then((user) =>
+      res.status(200).json({
+        lastName: `${user.lastName}`,
+        firstName: `${user.firstName}`,
+        email: `${user.email}`,
+      })
+    )
     .catch((error) => res.status(404).json({ error }));
-  console.log(User);
 };
