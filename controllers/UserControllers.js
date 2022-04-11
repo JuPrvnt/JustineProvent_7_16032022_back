@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 // Importation du module de création de token
 const jwt = require("jsonwebtoken");
 
+// Importation du module fs de node.js pour accéder au fichier du serveur
+const fs = require("fs");
+
 // Importation model de la base de donnée user
 const database = require("../models/indexModels");
 const User = database.user;
@@ -16,6 +19,7 @@ exports.signup = async (req, res, next) => {
     firstName: req.body.firstName,
     email: req.body.email,
     password: hash,
+    isAdmin: req.body.isAdmin,
   };
   try {
     const user = await User.findOne({ where: { email: req.body.email } });
@@ -30,6 +34,7 @@ exports.signup = async (req, res, next) => {
         lastName: user.lastName,
         firstName: user.firstName,
         email: user.email,
+        isAdmin: user.isAdmin,
         token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
           expiresIn: "24h",
         }),
@@ -55,9 +60,13 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userId: user._id,
-            token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
-              expiresIn: "24h",
-            }),
+            token: jwt.sign(
+              { userId: user._id, isAdmin: user.isAdmin },
+              process.env.SECRET_TOKEN,
+              {
+                expiresIn: "24h",
+              }
+            ),
           });
         })
         .catch((error) => res.status(500).json({ error }));
@@ -66,10 +75,7 @@ exports.login = (req, res, next) => {
 };
 
 exports.logout = (req, res, next) => {
-  res
-    .clearCookie("access_token")
-    .status(200)
-    .send("L'utilisateur a été déconnecté");
+  res.status(200).send("L'utilisateur a été déconnecté !");
 };
 
 // Récupération des données du profil
@@ -80,7 +86,62 @@ exports.getOneUser = (req, res, next) => {
         lastName: `${user.lastName}`,
         firstName: `${user.firstName}`,
         email: `${user.email}`,
+        imageUrl: `${user.imageUrl}`,
+        isAdmin: `${user.isAdmin}`,
       })
     )
     .catch((error) => res.status(404).json({ error }));
 };
+
+// Modification des données du profil
+exports.modifyUser = (req, res, next) => {
+  const user = req.file
+    ? {
+        ...req.body,
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
+  User.update({ where: { _id: req.params.id } })
+    .then(() =>
+      res
+        .status(200)
+        .json({ message: "Les données utilisateurs ont été mises à jour" })
+    )
+    .catch((error) =>
+      res
+        .status(400)
+        .json({ message: "Impossible de mettre à jour le profil" + error })
+    );
+};
+
+/*
+exports.modifyUser = async (req, res, next) => {
+  try {
+    let user = await User.findOne({ where: { id: req.body.id } });
+    if (req.body.lastName) {
+      user.lastName = req.body.lastName;
+    }
+    if (req.body.firstName) {
+      user.firstName = req.body.firstName;
+    }
+    if (req.body.email) {
+      user.email = req.body.email;
+    }
+    try {
+      user.save({});
+      res.status(200).json({
+        user: user,
+        message: "Votre profil a bien été modifié !",
+      });
+    } catch (error) {
+      return res
+        .status(500)
+        .send({ error: "Erreur lors de la mise à jour de votre profil !" });
+    }
+  } catch (error) {
+    return res.status(500).send({ error: "Erreur serveur" });
+  }
+};
+*/

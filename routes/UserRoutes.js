@@ -15,6 +15,7 @@ router.post("/signup", userCtrl.signup);
 router.post("/login", userCtrl.login);
 router.get("/logout", userCtrl.logout);
 router.get("/", auth, userCtrl.getOneUser);
+router.put("/", auth, userCtrl.modifyUser);
 
 // Exportation du module router
 module.exports = router;

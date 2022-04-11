@@ -24,6 +24,15 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      imageUrl: {
+        type: Sequelize.STRING,
+        defaultValue:
+          "https://www.flaticon.com/free-icon/user_1077012?term=person&page=1&position=16&related_id=1077012&origin=search&k=1649675418061",
+      },
+      isAdmin: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
     },
     {
       schema: "Groupomania",

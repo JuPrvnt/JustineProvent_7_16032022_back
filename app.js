@@ -1,6 +1,7 @@
 // Importation des plugins
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require("path");
 
 // Importation des routes
 const userRoutes = require("./routes/UserRoutes");
@@ -33,6 +34,9 @@ const db = require("./models/indexModels");
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Database synchronised.");
 });
+
+// Comment traiter les requêtes vers le route /image
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // La route d'authentification
 app.use("/", userRoutes);
