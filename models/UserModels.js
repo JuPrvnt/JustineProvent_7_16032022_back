@@ -1,36 +1,36 @@
 // Connexion à la base de données
-module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define(
-    "User",
+module.exports = (sequelize, DataType) => {
+  return sequelize.define(
+    "user",
     {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: DataType.UUID,
+        defaultValue: DataType.UUIDV4,
         primaryKey: true,
       },
       lastName: {
-        type: Sequelize.STRING,
+        type: DataType.STRING,
         allowNull: false,
       },
       firstName: {
-        type: Sequelize.STRING,
+        type: DataType.STRING,
         allowNull: false,
       },
       email: {
-        type: Sequelize.STRING,
+        type: DataType.STRING,
         allowNull: false,
       },
       password: {
-        type: Sequelize.STRING,
+        type: DataType.STRING,
         allowNull: false,
       },
       imageUrl: {
-        type: Sequelize.STRING,
+        type: DataType.STRING,
         defaultValue:
           "https://www.flaticon.com/free-icon/user_1077012?term=person&page=1&position=16&related_id=1077012&origin=search&k=1649675418061",
       },
       isAdmin: {
-        type: Sequelize.BOOLEAN,
+        type: DataType.BOOLEAN,
         defaultValue: false,
       },
     },
@@ -38,5 +38,4 @@ module.exports = (sequelize, Sequelize) => {
       schema: "Groupomania",
     }
   );
-  return User;
 };
