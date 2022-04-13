@@ -27,20 +27,19 @@ exports.signup = async (req, res, next) => {
     const user = await User.findOne({ where: { email: req.body.email } });
     if (user) {
       return res
-        .status(403)
+        .status(409)
         .send({ error: "Vous êtes déjà inscrit, veuillez-vous connecter !" });
     } else {
       const user = await User.create(userInfo);
-      res.status(200).json({
-        _id: user.id,
+      res.status(201).json({
+        id: user.id,
         lastName: user.lastName,
         firstName: user.firstName,
         email: user.email,
         isAdmin: user.isAdmin,
-        token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
+        token: jwt.sign({ userId: user.id }, process.env.SECRET_TOKEN, {
           expiresIn: "24h",
         }),
-        message: "Nouvel utilisateur créé",
       });
     }
   } catch (error) {
@@ -62,10 +61,10 @@ exports.login = (req, res, next) => {
             return res.status(401).json({ error: "Mot de passe incorrect !" });
           } else {
             res.status(200).json({
-              userId: user._id,
+              userId: user.id,
               isAdmin: user.isAdmin,
               token: jwt.sign(
-                { userId: user._id, isAdmin: user.isAdmin },
+                { userId: user.id, isAdmin: user.isAdmin },
                 process.env.SECRET_TOKEN,
                 {
                   expiresIn: "24h",
@@ -86,7 +85,7 @@ exports.logout = (req, res, next) => {
 
 // Récupération des données du profil
 exports.getOneUser = (req, res, next) => {
-  User.findOne({ _id: req.auth })
+  User.findOne({ id: req.auth })
     .then((user) =>
       res.status(200).json({
         lastName: `${user.lastName}`,
@@ -133,7 +132,7 @@ exports.modifyUser = async (req, res, next) => {
 
 /*
 exports.modifyUser = (req, res, next) => {
-  User.update({ where: { _id: req.params.id } })
+  User.update({ where: { id: req.params.id } })
     .then(() =>
       res
         .status(200)
@@ -150,8 +149,8 @@ exports.modifyUser = (req, res, next) => {
 // Suppression d'un profil
 exports.deleteUser = async (req, res, next) => {
   try {
-    const user = await User.findOne({ where: { _id: req.body.id } });
-    User.delete({ where: { _id: user.id } });
+    const user = await User.findOne({ where: { id: req.body.id } });
+    User.delete({ where: { id: user.id } });
     res.status(200).json({ message: "Utilisateur supprimé !" });
   } catch (error) {
     return res.status(500).send({ error: "Erreur serveur" });
