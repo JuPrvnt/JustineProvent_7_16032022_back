@@ -35,7 +35,8 @@ module.exports = (sequelize, DataType) => {
       },
     },
     {
-      schema: "Groupomania",
+      schema: "groupomania",
+      freezeTableName: true,
     }
   );
 };

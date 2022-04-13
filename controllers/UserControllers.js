@@ -43,7 +43,7 @@ exports.signup = async (req, res, next) => {
       });
     }
   } catch (error) {
-    return res.status(500).send({ error: "Erreur serveur" });
+    return res.status(500).json(error);
   }
 };
 
@@ -73,9 +73,9 @@ exports.login = (req, res, next) => {
             });
           }
         })
-        .catch((error) => res.status(500).json({ error }));
+        .catch((error) => res.status(500).json(error));
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch((error) => res.status(500).json(error));
 };
 
 // Déconnexion du profil
@@ -85,7 +85,7 @@ exports.logout = (req, res, next) => {
 
 // Récupération des données du profil
 exports.getOneUser = (req, res, next) => {
-  User.findOne({ id: req.auth })
+  User.findOne({ where: { id: req.auth.userId } })
     .then((user) =>
       res.status(200).json({
         lastName: `${user.lastName}`,
@@ -95,21 +95,14 @@ exports.getOneUser = (req, res, next) => {
         isAdmin: `${user.isAdmin}`,
       })
     )
-    .catch((error) =>
-      res.status(400).json({
-        message:
-          "Impossible de récupérer les données de l'utilisateur " + error,
-      })
-    );
+    .catch((error) => res.status(400).json(error));
 };
 
 // Modification des données du profil
 exports.modifyUser = async (req, res, next) => {
-  console.log(req.body);
   try {
-    let user = await User.findOne({ where: { id: req.body.id } });
+    let user = await User.findOne({ where: { id: req.auth.userId } });
 
-    user.userId = req.body.userId;
     user.lastName = req.body.lastName;
     user.firstName = req.body.firstName;
     user.email = req.body.email;
@@ -122,37 +115,20 @@ exports.modifyUser = async (req, res, next) => {
       });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ error: "Erreur serveur" });
+
+      return res.status(500).json(error);
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Erreur serveur" });
+    return res.status(500).json(error);
   }
 };
-
-/*
-exports.modifyUser = (req, res, next) => {
-  User.update({ where: { id: req.params.id } })
-    .then(() =>
-      res
-        .status(200)
-        .json({ message: "Les données utilisateurs ont été mises à jour" })
-    )
-    .catch((error) =>
-      res
-        .status(400)
-        .json({ message: "Impossible de mettre à jour le profil" + error })
-    );
-};
-*/
 
 // Suppression d'un profil
-exports.deleteUser = async (req, res, next) => {
-  try {
-    const user = await User.findOne({ where: { id: req.body.id } });
-    User.delete({ where: { id: user.id } });
-    res.status(200).json({ message: "Utilisateur supprimé !" });
-  } catch (error) {
-    return res.status(500).send({ error: "Erreur serveur" });
-  }
+exports.deleteUser = (req, res, next) => {
+  User.destroy({ where: { id: req.auth.userId } })
+    .then(() =>
+      res.status(200).json({ message: "L'utilisateur'a été supprimé !" })
+    )
+    .catch((error) => res.status(500).json(error));
 };

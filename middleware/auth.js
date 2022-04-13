@@ -16,24 +16,6 @@ module.exports = (req, res, next) => {
       next();
     }
   } catch (error) {
-    console.log({ error: error | "Requête non authentifiée !" });
+    console.log(error);
   }
 };
-
-/*
-module.exports = (req, res, next) => {
-  try {
-    const token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, process.env.SECRET_TOKEN, (err, user) => {
-      if (err) {
-        return res.status(403).send("Utilisateur non autorisé !");
-      }
-      req.userId = user.userId;
-
-      next();
-    });
-  } catch (error) {
-    res.status(400).send("Token invalide !");
-  }
-};
-*/
