@@ -5,6 +5,7 @@ const path = require("path");
 
 // Importation des routes
 const userRoutes = require("./routes/UserRoutes");
+const postRoutes = require("./routes/PostRoutes");
 
 // Création de l'application express
 const app = express();
@@ -38,8 +39,11 @@ db.sequelize.sync({ force: false }).then(() => {
 // Comment traiter les requêtes vers le route /image
 app.use("/images", express.static(path.join(__dirname, "images")));
 
-// La route d'authentification
+// Les routes utilisateurs
 app.use("/", userRoutes);
+
+// Les routes publications
+app.use("/post", postRoutes);
 
 // Exportation de app.js pour pouvoir y accéder depuis un autre fichier
 module.exports = app;

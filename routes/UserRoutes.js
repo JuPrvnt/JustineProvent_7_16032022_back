@@ -10,10 +10,11 @@ const userCtrl = require("../controllers/UserControllers");
 // Importation du middleware d'authentification
 const auth = require("../middleware/auth");
 
-// Route du endpoint signup
+// Routes
 router.post("/signup", userCtrl.signup);
 router.post("/login", userCtrl.login);
 router.get("/logout", userCtrl.logout);
+
 router.get("/", auth, userCtrl.getOneUser);
 router.put("/", auth, userCtrl.modifyUser);
 router.delete("/", auth, userCtrl.deleteUser);
