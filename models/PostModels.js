@@ -9,17 +9,26 @@ module.exports = (sequelize, DataType) => {
         primaryKey: true,
       },
       content: {
-        type: DataType.STRING,
+        type: DataType.TEXT,
         allowNull: false,
       },
-      imageUrl: {
+      file: {
         type: DataType.BLOB,
         allowNull: true,
+      },
+      userId: {
+        type: DataType.UUID,
+        required: true,
+        references: {
+          model: "user",
+          key: "id",
+        },
       },
     },
     {
       schema: "groupomania",
       freezeTableName: true,
+      modelName: "post",
     }
   );
 };

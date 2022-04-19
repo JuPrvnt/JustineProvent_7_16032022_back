@@ -7,10 +7,11 @@ const router = express.Router();
 // Importation du controlleur user
 const postCtrl = require("../controllers/PostControllers");
 
-// Importation du middleware d'authentification
+// Importation des middlewares
 const auth = require("../middleware/auth");
+const multer = require("../middleware/multer-config");
 
 // Routes
-router.post("/", postCtrl.createPost);
+router.post("/", auth, multer, postCtrl.createPost);
 
 module.exports = router;

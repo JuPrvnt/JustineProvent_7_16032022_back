@@ -11,7 +11,7 @@ const MIME_TYPES = {
 // Destination du fichier (répertoire) et générer un nom de fichier unique
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "images");
+    callback(null, "./images");
   },
   filename: (req, file, callback) => {
     let name = file.originalname.split(" ").join("_");

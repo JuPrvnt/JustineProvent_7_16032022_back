@@ -37,6 +37,7 @@ module.exports = (sequelize, DataType) => {
     {
       schema: "groupomania",
       freezeTableName: true,
+      modelName: "user",
     }
   );
 };
