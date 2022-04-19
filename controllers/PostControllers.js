@@ -27,7 +27,6 @@ exports.createPost = async (req, res, next) => {
         content: req.body.content,
         image: imageUrl,
       });
-      console.log(post);
       res.status(201).json(post);
     } else {
       res.status(400).json({ error: "L'utilisateur n'existe pas !" });
