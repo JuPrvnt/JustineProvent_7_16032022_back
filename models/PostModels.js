@@ -12,8 +12,8 @@ module.exports = (sequelize, DataType) => {
         type: DataType.TEXT,
         allowNull: true,
       },
-      file: {
-        type: DataType.BLOB,
+      image: {
+        type: DataType.STRING,
         allowNull: true,
       },
       userId: {

@@ -16,18 +16,19 @@ exports.createPost = async (req, res, next) => {
     if (user !== null) {
       let imageUrl;
       if (req.file) {
-        imageUrl = `${req.protocol}://${req.get("host")}/images/${
+        imageUrl = `${req.protocol}://${req.get("host")}/image/${
           req.file.filename
         }`;
       } else {
         imageUrl = null;
       }
-      const postInfo = await Post.create({
+      const post = await Post.create({
         userId: req.auth.userId,
         content: req.body.content,
-        file: imageUrl,
+        image: imageUrl,
       });
-      res.status(201).json({ message: "Publication créée !" });
+      console.log(post);
+      res.status(201).json(post);
     } else {
       res.status(400).json({ error: "L'utilisateur n'existe pas !" });
     }
