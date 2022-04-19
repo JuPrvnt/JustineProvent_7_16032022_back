@@ -10,7 +10,7 @@ module.exports = (sequelize, DataType) => {
       },
       content: {
         type: DataType.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       file: {
         type: DataType.BLOB,
