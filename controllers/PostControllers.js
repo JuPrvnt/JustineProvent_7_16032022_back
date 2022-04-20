@@ -39,21 +39,21 @@ exports.createPost = async (req, res, next) => {
 // Affichage des publications
 exports.getAllPosts = async (req, res, next) => {
   try {
-    Post.findAll({
-      attributes: ["id", "content", "file", "createdAt", "userId"],
+    const post = await Post.findAll({
+      attributes: ["id", "content", "image", "createdAt", "userId"],
       order: [["createdAt", "DESC"]],
       include: [
         {
-          model: db.user,
+          model: database.user,
           as: "user",
           attributes: ["lastName", "firstName", "id"],
         },
       ],
-    }).then((post) => {
-      console.log(post);
-      res.json(post);
     });
+    return res.status(200).json(post);
   } catch (error) {
-    return res.status(500).send(error);
+    return console.log(error);
   }
 };
+
+// res.status(500).json

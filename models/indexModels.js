@@ -30,25 +30,4 @@ const keyUser = { name: "userId", allowNull: false };
 db.user.hasMany(db.post, { foreignKey: keyUser });
 db.post.belongsTo(db.user, { foreignKey: keyUser });
 
-// Clés étrangères
-
-/*
-const User = UserModels(sequelize, DataTypes);
-const Post = PostModels(sequelize, DataTypes);
-
-sequelize.models.User.hasMany(Post, { onDelete: "cascade" });
-sequelize.models.Post.belongsTo(User);
-
-db.user.belongsToMany(db.post, {
-  foreignKey: "userId",
-  otherKey: "post",
-});
-
-db.post.belongsTo(db.user, {
-  foreignKey: "userId",
-  otherKey: "user",
-  onDelete: "CASCADE", // Si on supprime un user, on supprime ses messages
-});
-*/
-
 module.exports = db;
