@@ -52,8 +52,15 @@ exports.getAllPosts = async (req, res, next) => {
     });
     return res.status(200).json(post);
   } catch (error) {
-    return console.log(error);
+    return res.status(500).json;
   }
 };
 
-// res.status(500).json
+// Supprimer les publications
+exports.deletePost = (req, res, next) => {
+  Post.destroy({ where: { id: req.auth.userId } })
+    .then(() =>
+      res.status(200).json({ message: "La publication a été supprimée !" })
+    )
+    .catch((error) => res.status(500).json(error));
+};

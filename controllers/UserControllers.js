@@ -128,7 +128,7 @@ exports.modifyUser = async (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
   User.destroy({ where: { id: req.auth.userId } })
     .then(() =>
-      res.status(200).json({ message: "L'utilisateur'a été supprimé !" })
+      res.status(200).json({ message: "L'utilisateur a été supprimé !" })
     )
     .catch((error) => res.status(500).json(error));
 };
