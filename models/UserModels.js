@@ -26,8 +26,7 @@ module.exports = (sequelize, DataType) => {
       },
       imageUrl: {
         type: DataType.STRING,
-        defaultValue:
-          "https://www.flaticon.com/free-icon/user_1077012?term=person&page=1&position=16&related_id=1077012&origin=search&k=1649675418061",
+        defaultValue: "https://cdn-icons-png.flaticon.com/512/1077/1077012.png",
       },
       isAdmin: {
         type: DataType.BOOLEAN,

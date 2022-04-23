@@ -41,3 +41,19 @@ exports.getAllComments = async (req, res, next) => {
     return res.status(500).json;
   }
 };
+
+// Suppression des commentaires
+exports.deleteComment = async (req, res) => {
+  const comment = await Comment.destroy({
+    attributes: ["commentId", "content", "createdAt", "userId"],
+    order: [["createdAt", "DESC"]],
+    include: [
+      {
+        model: database.user,
+        as: "user",
+        attributes: ["lastName", "firstName", "id"],
+      },
+    ],
+  });
+  res.status(200).json({ comment, message: "Commentaire supprimé" });
+};

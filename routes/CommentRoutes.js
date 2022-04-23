@@ -14,5 +14,6 @@ const multer = require("../middleware/multer-config");
 // Routes
 router.post("/", auth, multer, commentCtrl.createComment);
 router.get("/", auth, multer, commentCtrl.getAllComments);
+router.delete("/", auth, commentCtrl.deleteComment);
 
 module.exports = router;
