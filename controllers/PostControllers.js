@@ -57,10 +57,30 @@ exports.getAllPosts = async (req, res, next) => {
 };
 
 // Supprimer les publications
-exports.deletePost = (req, res, next) => {
-  Post.destroy({ where: { id: req.auth.userId } })
-    .then(() =>
-      res.status(200).json({ message: "La publication a été supprimée !" })
-    )
-    .catch((error) => res.status(500).json(error));
+exports.deletePost = async (req, res, next) => {
+  try {
+    const post = await Post.findOne({
+      attributes: ["id", "content", "image", "createdAt", "userId"],
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: database.user,
+          as: "user",
+          attributes: ["lastName", "firstName", "id"],
+        },
+      ],
+    });
+    if (post.dataValues.image) {
+      const filename = post.dataValues.image.split("/image/")[1];
+      fs.unlink(`image/${filename}`, () => {
+        Post.destroy({ where: { id: post.id } }, { truncate: true });
+        res.status(200).json({ message: "Post et image supprimés !" });
+      });
+    } else {
+      Post.destroy({ where: { id: post.id } });
+      res.status(200).json({ message: "Post supprimé !" });
+    }
+  } catch (error) {
+    return console.log(error);
+  }
 };
