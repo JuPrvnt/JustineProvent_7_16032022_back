@@ -6,6 +6,7 @@ const path = require("path");
 // Importation des routes
 const userRoutes = require("./routes/UserRoutes");
 const postRoutes = require("./routes/PostRoutes");
+const commentRoutes = require("./routes/CommentRoutes");
 
 // Création de l'application express
 const app = express();
@@ -44,6 +45,9 @@ app.use("/", userRoutes);
 
 // Les routes publications
 app.use("/post", postRoutes);
+
+// Les routes commentaires
+app.use("/comment", commentRoutes);
 
 // Exportation de app.js pour pouvoir y accéder depuis un autre fichier
 module.exports = app;

@@ -2,6 +2,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const UserModels = require("../models/UserModels");
 const PostModels = require("../models/PostModels");
+const CommentModels = require("../models/CommentModels");
 
 require("dotenv").config();
 
@@ -23,11 +24,13 @@ db.sequelize = sequelize;
 
 db.user = require("./UserModels")(sequelize, Sequelize);
 db.post = require("./PostModels")(sequelize, Sequelize);
+db.comment = require("./CommentModels")(sequelize, Sequelize);
 
 // Associations des models
 const keyUser = { name: "userId", allowNull: false };
 
 db.user.hasMany(db.post, { foreignKey: keyUser });
 db.post.belongsTo(db.user, { foreignKey: keyUser });
+db.comment.belongsTo(db.user, { foreignKey: keyUser });
 
 module.exports = db;

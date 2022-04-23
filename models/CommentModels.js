@@ -1,19 +1,15 @@
 // Connexion à la base de données
 module.exports = (sequelize, DataType) => {
   return sequelize.define(
-    "post",
+    "comment",
     {
-      postId: {
+      commentId: {
         type: DataType.UUID,
         defaultValue: DataType.UUIDV4,
         primaryKey: true,
       },
       content: {
         type: DataType.TEXT,
-        allowNull: true,
-      },
-      image: {
-        type: DataType.STRING,
         allowNull: true,
       },
       userId: {
@@ -24,11 +20,19 @@ module.exports = (sequelize, DataType) => {
           key: "id",
         },
       },
+      postId: {
+        type: DataType.UUID,
+        required: false,
+        references: {
+          model: "post",
+          key: "postId",
+        },
+      },
     },
     {
       schema: "groupomania",
       freezeTableName: true,
-      modelName: "post",
+      modelName: "comment",
     }
   );
 };

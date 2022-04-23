@@ -40,7 +40,7 @@ exports.createPost = async (req, res, next) => {
 exports.getAllPosts = async (req, res, next) => {
   try {
     const post = await Post.findAll({
-      attributes: ["id", "content", "image", "createdAt", "userId"],
+      attributes: ["postId", "content", "image", "createdAt", "userId"],
       order: [["createdAt", "DESC"]],
       include: [
         {
@@ -60,7 +60,7 @@ exports.getAllPosts = async (req, res, next) => {
 exports.deletePost = async (req, res, next) => {
   try {
     const post = await Post.findOne({
-      attributes: ["id", "content", "image", "createdAt", "userId"],
+      attributes: ["postId", "content", "image", "createdAt", "userId"],
       order: [["createdAt", "DESC"]],
       include: [
         {
@@ -73,11 +73,11 @@ exports.deletePost = async (req, res, next) => {
     if (post.dataValues.image) {
       const filename = post.dataValues.image.split("/image/")[1];
       fs.unlink(`image/${filename}`, () => {
-        Post.destroy({ where: { id: post.id } }, { truncate: true });
+        Post.destroy({ where: { postId: post.postId } }, { truncate: true });
         res.status(200).json({ message: "Post et image supprimés !" });
       });
     } else {
-      Post.destroy({ where: { id: post.id } });
+      Post.destroy({ where: { postId: post.postId } });
       res.status(200).json({ message: "Post supprimé !" });
     }
   } catch (error) {
