@@ -91,7 +91,6 @@ exports.getOneUser = (req, res, next) => {
         lastName: `${user.lastName}`,
         firstName: `${user.firstName}`,
         email: `${user.email}`,
-        imageUrl: `${user.imageUrl}`,
         isAdmin: `${user.isAdmin}`,
       })
     )

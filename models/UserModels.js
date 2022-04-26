@@ -24,10 +24,6 @@ module.exports = (sequelize, DataType) => {
         type: DataType.STRING,
         allowNull: false,
       },
-      imageUrl: {
-        type: DataType.STRING,
-        defaultValue: "https://cdn-icons-png.flaticon.com/512/1077/1077012.png",
-      },
       isAdmin: {
         type: DataType.BOOLEAN,
         defaultValue: false,
