@@ -14,7 +14,7 @@ exports.createComment = async (req, res, next) => {
     const comment = await Comment.create({
       content: req.body.content,
       userId: req.auth.userId,
-      //postId: req.body.postId,
+      postId: req.body.postId,
     });
     res.status(201).json(comment);
   } catch (error) {

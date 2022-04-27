@@ -28,9 +28,13 @@ db.comment = require("./CommentModels")(sequelize, Sequelize);
 
 // Associations des models
 const keyUser = { name: "userId", allowNull: false };
+const keyPost = { name: "postId", allowNull: false };
 
 db.user.hasMany(db.post, { foreignKey: keyUser });
+db.user.hasMany(db.comment, { foreignKey: keyUser });
+db.post.hasMany(db.comment, { foreignKey: keyPost });
 db.post.belongsTo(db.user, { foreignKey: keyUser });
 db.comment.belongsTo(db.user, { foreignKey: keyUser });
+db.comment.belongsTo(db.post, { foreignKey: keyPost });
 
 module.exports = db;

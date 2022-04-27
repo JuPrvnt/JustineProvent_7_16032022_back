@@ -38,7 +38,7 @@ db.sequelize.sync({ force: false }).then(() => {
 });
 
 // Comment traiter les requêtes vers le route /image
-app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/image", express.static(path.join(__dirname, "image")));
 
 // Les routes utilisateurs
 app.use("/", userRoutes);
