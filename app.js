@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 const db = require("./models/indexModels");
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
   console.log("Database synchronised.");
 });
 
