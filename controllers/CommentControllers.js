@@ -44,17 +44,21 @@ exports.getAllComments = async (req, res, next) => {
 
 // Suppression des commentaires
 exports.deleteComment = async (req, res, next) => {
-  const comment = await Comment.destroy({
-    attributes: ["commentId", "content", "createdAt", "userId"],
-    order: [["createdAt", "DESC"]],
-    include: [
-      {
-        model: database.user,
-        as: "user",
-        attributes: ["lastName", "firstName", "id"],
-      },
-    ],
-    truncate: true,
-  });
-  res.status(200).json({ comment, message: "Commentaire supprimé" });
+  try {
+    const comment = await Comment.findOne({
+      attributes: ["commentId", "content", "createdAt", "userId"],
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: database.user,
+          as: "user",
+          attributes: ["lastName", "firstName", "id"],
+        },
+      ],
+    });
+    Comment.destroy({ where: { commentId: comment.commentId } });
+    return res.status(200).json({ message: "Commentaire supprimé !" });
+  } catch (error) {
+    return console.log(error);
+  }
 };
