@@ -26,7 +26,7 @@ exports.createComment = async (req, res, next) => {
 exports.getAllComments = async (req, res, next) => {
   try {
     const comment = await Comment.findAll({
-      attributes: ["commentId", "content", "createdAt", "userId"],
+      attributes: ["commentId", "content", "createdAt", "userId", "postId"],
       order: [["createdAt", "DESC"]],
       include: [
         {
