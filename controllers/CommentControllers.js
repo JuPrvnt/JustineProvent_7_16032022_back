@@ -26,7 +26,7 @@ exports.createComment = async (req, res, next) => {
 exports.getAllComments = async (req, res, next) => {
   try {
     const comment = await Comment.findAll({
-      where: { postId: req.params.postId },
+      where: { postId: req.query.postId },
       attributes: ["commentId", "content", "createdAt", "userId", "postId"],
       order: [["createdAt", "DESC"]],
       include: [
@@ -53,12 +53,20 @@ exports.deleteComment = async (req, res, next) => {
         {
           model: database.user,
           as: "user",
-          attributes: ["lastName", "firstName", "id"],
+          attributes: ["lastName", "firstName", "id", "isAdmin"],
         },
       ],
     });
-    Comment.destroy({ where: { commentId: comment.commentId } });
-    return res.status(200).json({ message: "Commentaire supprimé !" });
+    if (comment.userId === req.auth.userId || comment.user.isAdmin) {
+      await Comment.destroy({
+        where: { commentId: req.params.commentId },
+      });
+      return res.status(200).json(comment);
+    } else {
+      return res.status(401).json({
+        message: "Vous n'avez pas les droits pour supprimer ce commentaire",
+      });
+    }
   } catch (error) {
     return console.log(error);
   }
