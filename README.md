@@ -4,21 +4,41 @@
 
 ### 1) BACKEND
 
-Le backend se trouve ici : https://github.com/JuPrvnt/JustineProvent_7_16032022_back
+Pour le trouver, c'est par ici : https://github.com/JuPrvnt/JustineProvent_7_16032022_back
 
-Une fois cloné, pour le lancer :
+Voici les technologies utilisées :
+
+- NodeJS
+- Express
+- Sequelize
+- Packages (bcrypt, cors, dotenv, fs, jsonwebtoken, sequelize, nodemon, multer)
+
+Une fois cloné, il faut créer un fichier .env sur le format du .env.template et le remplir.
+
+Enfin, voici les commandes pour le lancer :
+
 ```
 npm install
 
-nodemon server
+node server
 ```
+
 ### 2) FRONTEND
 
 Le frontend se trouve là : https://github.com/JuPrvnt/JustineProvent_7_16032022_front
 
-Une fois cloné, pour le lancer :
+Voici les technologies utilisées :
+
+- React
+- Sass
+- Packages (axios, dayJs, react-dom, react-router-dom)
+
+Une fois cloné, il faut créer un fichier .env sur le format du .env.template et le remplir.
+
+Enfin, voici les commandes pour le lancer :
+
 ```
 npm install
 
-npm run start 
+npm run start
 ```
