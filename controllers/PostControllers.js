@@ -70,19 +70,15 @@ exports.deletePost = async (req, res, next) => {
         },
       ],
     });
-    if (post.userId === req.auth.userId  || comment.user.isAdmin) {
-      if (post.dataValues.image) {
-        const filename = post.dataValues.image.split("/image/")[1];
-        fs.unlink(`image/${filename}`, () => {
-          Post.destroy({ where: { postId: post.postId } }, { truncate: true });
-          res.status(200).json({ message: "Post et image supprimés !" });
-        });
-      } else {
-        Post.destroy({ where: { postId: post.postId } });
-        res.status(200).json({ message: "Post supprimé !" });
-      }
+    if (post.dataValues.image) {
+      const filename = post.dataValues.image.split("/image/")[1];
+      fs.unlink(`image/${filename}`, () => {
+        Post.destroy({ where: { postId: post.postId } }, { truncate: true });
+        res.status(200).json({ message: "Post et image supprimés !" });
+      });
     } else {
-      res.status(401).json({ error: "Vous n'avez pas le droit !" });
+      Post.destroy({ where: { postId: post.postId } });
+      res.status(200).json({ message: "Post supprimé !" });
     }
   } catch (error) {
     return console.log(error);
