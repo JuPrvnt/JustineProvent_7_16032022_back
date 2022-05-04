@@ -32,7 +32,7 @@ exports.signup = async (req, res, next) => {
     } else {
       const user = await User.create(userInfo);
       res.status(201).json({
-        id: user.id,
+        userId: user.id,
         lastName: user.lastName,
         firstName: user.firstName,
         email: user.email,
